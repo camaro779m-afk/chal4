@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Secure Upload</title>
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f4f4;
+        text-align: center;
+        margin-top: 100px;
+      }
+      .box {
+        background: white;
+        padding: 30px;
+        width: 400px;
+        margin: auto;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      button {
+        padding: 10px 20px;
+        background: #4caf50;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      #result {
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h2>Upload Image</h2>
+
+      <form id="uploadForm">
+        <input type="file" name="file" required />
+        <br /><br />
+        <button type="submit">Upload</button>
+      </form>
+
+      <div id="result"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          const result = document.getElementById("result");
+
+          if (response.ok) {
+            result.innerHTML =
+              "<p style='color:green'>" + data.message + "</p>";
+          } else {
+            result.innerHTML = "<p style='color:red'>" + data.error + "</p>";
+          }
+        });
+    </script>
+  </body>
+</html>
